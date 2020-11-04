@@ -31,6 +31,11 @@ public class POST {
 	public void i_have_priority_asigned() {
 		priority = val.randomPriority();
 	}
+	
+	@Given("I have a uppercase priority asigned")
+	public void i_have_a_uppercase_priority_asigned() {
+		priority = val.randomPriority().toUpperCase();
+	}
 
 	@Given("I have a story name")
 	public void i_have_a_story_name() {

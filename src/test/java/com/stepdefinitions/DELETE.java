@@ -44,7 +44,7 @@ public class DELETE {
 		assertEquals(statusCode, result);
 	}
 
-	@Then("The API should indicate that the story was not found with a 404 status code")
+	@Then("The API should indicate that the story was not found with a {int} status code")
 	public void the_API_should_indicate_that_the_story_was_not_found_with_a_status_code(int statusCode) {
 		int result = Integer.parseInt(base.response.getStatusCode().toString().substring(0, 3));
 		assertEquals(statusCode, result);
