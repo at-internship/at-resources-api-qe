@@ -7,4 +7,11 @@ public class MongoDBUtils {
 		db.close();
 		return exist;
 	}
+	
+	public static String getRandomID(String env, String mDataBase, String collection) {
+		MongoDBConnection db = new MongoDBConnection(env, mDataBase);
+		String id = db.foundRandomID(collection);
+		db.close();
+		return id;
+	}
 }

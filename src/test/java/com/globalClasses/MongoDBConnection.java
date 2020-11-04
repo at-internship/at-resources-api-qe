@@ -6,6 +6,7 @@ import java.util.Properties;
 
 import org.bson.Document;
 import org.bson.types.ObjectId;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.mongodb.MongoClient;
@@ -76,5 +77,24 @@ public class MongoDBConnection {
 			exist = false;
 		}
 		return exist;
+	}
+	
+	public String foundRandomID(String collection) {
+		String id = "";
+		MongoCollection<Document> coll = mDataBase.getCollection(collection);
+		FindIterable<Document> findIterable = coll.find();
+		try {
+			JSONArray jResult = new JSONArray();
+			JSONObject mObject = new JSONObject();
+			for (Document doc : findIterable) {
+				jResult.put(mObject = new JSONObject(doc.toJson()));
+			}
+			int jArrayLength = jResult.length()-1;
+			mObject = jResult.getJSONObject((int) (Math.random()*(jArrayLength-0+1)+0));
+			id = mObject.getJSONObject("_id").get("$oid").toString();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return id;
 	}
 }

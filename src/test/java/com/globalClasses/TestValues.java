@@ -51,4 +51,8 @@ public class TestValues{
 		int status = (int) (Math.random()*(1-0+1)+0);
 		return status;
 	}
+	public String randomID() {
+		String id = faker.lorem().characters(24, 25, true, true);
+		return id;
+	}
 }

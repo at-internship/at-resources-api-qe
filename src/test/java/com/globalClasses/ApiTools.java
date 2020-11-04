@@ -21,10 +21,10 @@ public class ApiTools {
 	public MediaType contentType = MediaType.APPLICATION_JSON;
 	public RestTemplate restTemplate = new RestTemplate();
 	public HttpHeaders headers = new HttpHeaders();
-	
+
 	public ResponseEntity<String> POSTMethod(String apiPath, String requestBody) {
 		try {
-		    headers.add("User-Agent", "User-Agent");
+			headers.add("User-Agent", "User-Agent");
 			headers.setContentType(contentType);
 
 			restTemplate.setErrorHandler(new ResponseErrorHandler() {
@@ -32,14 +32,40 @@ public class ApiTools {
 				public boolean hasError(ClientHttpResponse response) throws IOException {
 					return false;
 				}
+
 				@Override
 				public void handleError(ClientHttpResponse response) throws IOException {
-        		}});
+				}
+			});
 			HttpEntity<String> requestEntity = new HttpEntity<>(requestBody, headers);
-			response = restTemplate.exchange(hostName + apiPath, HttpMethod.POST, requestEntity, String.class);	
+			response = restTemplate.exchange(hostName + apiPath, HttpMethod.POST, requestEntity, String.class);
 		} catch (HttpClientErrorException e) {
 			System.out.println(e.getMessage());
-      		response = new ResponseEntity<String>(((HttpStatusCodeException) e).getResponseBodyAsString(),((HttpStatusCodeException) e).getStatusCode());
+			response = new ResponseEntity<String>(((HttpStatusCodeException) e).getResponseBodyAsString(),
+					((HttpStatusCodeException) e).getStatusCode());
+		}
+		return response;
+	}
+
+	public ResponseEntity<String> deleteMethod(String apiPath) {
+		try {
+			headers.setContentType(contentType);
+			restTemplate.setErrorHandler(new ResponseErrorHandler() {
+				@Override
+				public boolean hasError(ClientHttpResponse responseDelete) throws IOException {
+					return false;
+				}
+
+				@Override
+				public void handleError(ClientHttpResponse responseDelete) throws IOException {
+				}
+			});
+			HttpEntity<String> requestEntity = new HttpEntity<String>(headers);
+			response = restTemplate.exchange(hostName + apiPath, HttpMethod.DELETE, requestEntity, String.class);
+		} catch (HttpClientErrorException e) {
+			System.out.println(e.getMessage());
+			response = new ResponseEntity<String>(((HttpStatusCodeException) e).getResponseBodyAsString(),
+					((HttpStatusCodeException) e).getStatusCode());
 		}
 		return response;
 	}
