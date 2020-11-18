@@ -5,6 +5,8 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 
 import org.bson.Document;
 import org.bson.types.ObjectId;
@@ -26,6 +28,8 @@ public class MongoDBConnection {
 		Properties prop = new Properties();
 		String propFileName = "config.properties";
 		InputStream inputStream = getClass().getClassLoader().getResourceAsStream(propFileName);
+		Logger mongoLogger = Logger.getLogger( "org.mongodb.driver" );
+        mongoLogger.setLevel(Level.WARNING);
 		try {
 			if (inputStream != null) {
 				prop.load(inputStream);

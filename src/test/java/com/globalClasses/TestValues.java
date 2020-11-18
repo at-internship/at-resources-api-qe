@@ -31,8 +31,8 @@ public class TestValues{
 		return string;
 	}
 	public int randomStoryPoints() {
-		int[] storyPoints = {1, 3, 5, 8};
-		return storyPoints[(int) (Math.random()*(3-0+1)+0)];
+		int[] storyPoints = {1, 3, 5};
+		return storyPoints[(int) (Math.random()*(2-0+1)+0)];
 	}
 	public int randomProgress() {
 		int progress = (int) (Math.random()*(100-0+1)+0);
