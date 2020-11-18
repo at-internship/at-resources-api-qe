@@ -2,6 +2,8 @@ package com.globalClasses;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 import org.bson.Document;
@@ -58,8 +60,24 @@ public class MongoDBConnection {
 		return mClient;
 	}
 
-	private MongoDatabase getDB(String db) {
+	public static MongoDatabase getDB(String db) {
 		return mClient.getDatabase(db);
+	}
+
+
+	public static JSONArray convertMongo(String env, String mdb, String collection){
+		MongoDBConnection db = new MongoDBConnection(env, mdb);
+
+		JSONArray jResult = new JSONArray();
+		JSONObject mObject = new JSONObject();
+
+		MongoCollection<Document> coll = mDataBase.getCollection(collection);
+		FindIterable<Document> findIterable = coll.find();
+
+		for (Document doc : findIterable) {
+			jResult.put(mObject = new JSONObject(doc.toJson()));
+		}
+		return jResult;
 	}
 
 	public boolean compareID(String collection, String id) {
@@ -79,7 +97,7 @@ public class MongoDBConnection {
 		return exist;
 	}
 	
-	public String foundRandomID(String collection) {
+	public static String foundRandomID(String collection) {
 		String id = "";
 		MongoCollection<Document> coll = mDataBase.getCollection(collection);
 		FindIterable<Document> findIterable = coll.find();
@@ -96,5 +114,18 @@ public class MongoDBConnection {
 			e.printStackTrace();
 		}
 		return id;
+	}
+
+	public static JSONObject foundRandomStory(String env, String mdb, String collection){
+		MongoDBConnection db = new MongoDBConnection(env, mdb);
+		JSONObject mObject = new JSONObject();
+
+		MongoCollection<Document> coll = mDataBase.getCollection(collection);
+		FindIterable<Document> findIterable = coll.find();
+
+		for (Document doc : findIterable) {
+			mObject = new JSONObject(doc.toJson());
+		}
+		return mObject;
 	}
 }
