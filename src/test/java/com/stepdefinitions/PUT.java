@@ -1,19 +1,23 @@
 package com.stepdefinitions;
 
-import com.domain.requestPut;
+import com.domain.requestPostPut;
+
 import com.globalClasses.*;
 
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
+import org.apache.commons.lang3.StringUtils;
 import org.json.JSONObject;
+
+import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 
 
 public class PUT {
-    requestPut request = new requestPut();
+    requestPostPut req = new requestPostPut();
 
     private BasicSecurityUtil base;
     TestValues val = new TestValues();
@@ -23,100 +27,119 @@ public class PUT {
 
     @Given("I get a story to update")
     public void i_get_a_story_to_update() {
-        request.setId(MongoDBUtils.getRandomID("TEST", "at-resources-db", "stories"));
+        req.setId(MongoDBUtils.getRandomID("TEST", "at-resources-db", "stories"));
     }
 
-    @Given("I have a lowercase priority to update")
-    public void i_have_a_lowercase_priority_to_update() {
-        request.setPriority(val.randomPriority().toLowerCase());
-    }
+    @Given("I create a request to update as follow")
+    public void i_create_a_request_to_update_as_follow(Map<String, String> request) {
+        if (StringUtils.isNotBlank(request.get("priority"))) {
+            if ("random".equalsIgnoreCase(request.get("priority"))) {
+                req.setPriority(val.randomPriority());
+            } else if ("lowercase".equalsIgnoreCase(request.get("priority"))) {
+                req.setPriority(val.randomPriority().toLowerCase());
+            } else if("uppercase".equalsIgnoreCase(request.get("priority"))){
+                req.setPriority(val.randomPriority().toUpperCase());
+            } else {
+                req.setPriority(request.get("priority"));
+            }
+        }
 
-    @Given("I have a uppercase priority to update")
-    public void i_have_a_uppercase_priority_to_update() {
-        request.setPriority(val.randomPriority().toUpperCase());
-    }
+        if (StringUtils.isNotBlank(request.get("name"))) {
+            if ("random".equalsIgnoreCase(request.get("name"))) {
+                req.setName(val.randomName());
+            } else {
+                req.setName(request.get("name"));
+            }
+        }
 
-    @Given("I have a priority to update")
-    public void i_have_a_priority_to_update() { request.setPriority(val.randomPriority()); }
+        if (StringUtils.isNotBlank(request.get("description"))) {
+            if ("random".equalsIgnoreCase(request.get("description"))) {
+                req.setDescription(val.randomString());
+            } else if ("empty".equalsIgnoreCase(request.get("description"))) {
+                req.setDescription("");
+            } else {
+                req.setDescription(request.get("description"));
+            }
+        }
 
-    @Given("I have a name to update")
-    public void i_have_a_name_to_update() {
-        request.setName(val.randomName());
-    }
+        if (StringUtils.isNotBlank(request.get("acceptanceCriteria"))) {
+            if ("random".equalsIgnoreCase(request.get("acceptanceCriteria"))) {
+                req.setAcceptanceCriteria(val.randomString());
+            } else {
+                req.setAcceptanceCriteria(request.get("acceptanceCriteria"));
+            }
+        }
 
-    @Given("I have a description to update")
-    public void i_have_a_description_to_update() {
-        request.setDescription(val.randomString());
-    }
+        if (StringUtils.isNotBlank(request.get("storyPoints"))) {
+            if ("random".equalsIgnoreCase(request.get("storyPoints"))) {
+                req.setStoryPoints(val.randomStoryPoints());
+            } else if ("fibonacci".equalsIgnoreCase(request.get("storyPoints"))) {
+                req.setStoryPoints(13);
+            } else if ("two".equalsIgnoreCase(request.get("storyPoints"))) {
+                req.setStoryPoints(2);
+            } else if ("eight".equalsIgnoreCase(request.get("storyPoints"))) {
+                req.setStoryPoints(8);
+            } else {
+                req.setStoryPoints(1);
+            }
+        }
 
-    @Given("I have a description as empty to update")
-    public void i_have_a_description_as_empty_to_update() {
-        request.setDescription("");
-    }
+        if (StringUtils.isNotBlank(request.get("progress"))) {
+            if ("random".equalsIgnoreCase(request.get("progress"))) {
+                req.setProgress(val.randomProgress());
+            } else {
+                req.setProgress(0);
+            }
+        }
 
-    @Given("I have a acceptanceCriteria to update")
-    public void i_have_a_acceptanceCriteria_to_update() { request.setAcceptanceCriteria( val.randomString()); }
+        if (StringUtils.isNotBlank(request.get("startDate"))) {
+            if ("random".equalsIgnoreCase(request.get("startDate"))) {
+                req.setStartDate(val.randomStartDate().toString());
+            } else {
+                req.setStartDate(request.get("startDate"));
+            }
+        }
 
-    @Given("I have a storyPoints to update")
-    public void i_have_a_storyPoints_to_update() {
-        request.setStoryPoints(val.randomStoryPoints());
-    }
+        if (StringUtils.isNotBlank(request.get("dueDate"))) {
+            if ("random".equalsIgnoreCase(request.get("dueDate"))) {
+                req.setDueDate(val.randomDueDate().toString());
+            } else {
+                req.setDueDate(request.get("dueDate"));
+            }
+        }
 
-    @Given("I have story points out of accepted range to update")
-    public void i_have_story_points_out_of_accepted_range_to_update() {
-        request.setStoryPoints(13);
-    }
+        if (StringUtils.isNotBlank(request.get("createDate"))) {
+            if ("random".equalsIgnoreCase(request.get("createDate"))) {
+                req.setCreateDate(val.createDate().toString());
+            } else {
+                req.setCreateDate(request.get("createDate"));
+            }
+        }
 
-    @Given("I have story points with two as value to update")
-    public void i_have_story_points_with_two_as_value_to_update() {
-        request.setStoryPoints(2);
-    }
-
-    @Given("I have story points with eight as value to update")
-    public void i_have_story_points_with_eight_as_value_to_update() {
-        request.setStoryPoints(8);
-    }
-
-    @Given("I have a progress to update")
-    public void i_have_a_progress_to_update() {
-        request.setProgress(val.randomProgress());
-    }
-
-    @Given("I have a start date as current date to update")
-    public void i_have_a_start_date_as_current_date_to_update() { request.setStartDate(val.randomStartDate().toString()); }
-
-    @Given("I have an due date to update")
-    public void i_have_an_due_date_to_update() {
-        request.setDueDate(val.randomDueDate().toString());
-    }
-
-    @Given("I have an create date to update")
-    public void i_have_an_create_date_to_update() {
-        request.setCreateDate(val.createDate().toString());
-    }
-
-    @Given("I have a status to update")
-    public void i_have_a_status_to_update() {
-        request.setStatus(val.randomStatus());
+        if (StringUtils.isNotBlank(request.get("status"))) {
+            if ("random".equalsIgnoreCase(request.get("status"))) {
+                req.setStatus(String.valueOf(val.randomStatus()));
+            } else if ("letters".equalsIgnoreCase(request.get("status"))) {
+                req.setStatus(val.randomName());
+            } else if ("alphanumeric".equalsIgnoreCase(request.get("status"))) {
+                req.setStatus(val.randomAlphanumeric());
+            } else if ("specialCharacters".equalsIgnoreCase(request.get("status"))) {
+                req.setStatus(val.randomSpecialCharacters());
+            } else if ("negative".equalsIgnoreCase(request.get("status"))) {
+                req.setStatus("-1");
+            } else if ("greater".equalsIgnoreCase(request.get("status"))) {
+                req.setStatus(String.valueOf(val.randomStatus() + 2));
+            } else {
+                req.setStatus(request.get("status"));
+            }
+        }
     }
 
     @When("I update sprint using PUT operation")
     public void i_update_sprint_using_PUT_operation() {
-        JSONObject object = new JSONObject();
-        object.put("id", request.getId());
-        object.put("priority", request.getPriority() );
-        object.put("name", request.getName());
-        object.put("description", request.getDescription());
-        object.put("acceptanceCriteria", request.getAcceptanceCriteria());
-        object.put("storyPoints", request.getStoryPoints());
-        object.put("progress", request.getProgress());
-        object.put("startDate", request.getStartDate());
-        object.put("dueDate", request.getDueDate());
-        object.put("createDate", request.getCreateDate());
-        object.put("status", request.getStatus());
-        base.requestBody = object.toString();
+        base.requestBody = req.requestBody();
 
-        base.apiResource = ApiPaths.RESOURCES_API_JAVA +"/"+ request.getId();
+        base.apiResource = ApiPaths.RESOURCES_API_JAVA +"/"+ req.getId();
         base.ServiceApi = new ApiTools();
         base.response = base.ServiceApi.PUTMethod(base.apiResource, base.requestBody);
         base.responseBody = base.response.getBody();
@@ -139,18 +162,32 @@ public class PUT {
     public void the_error_message_should_give_the_correct_string() {
         base.responseBody = base.response.getBody();
         JSONObject result = new JSONObject(base.responseBody);
-        String message = "", priority = request.getPriority(), description=request.getDescription();
-        int sP= request.getStoryPoints();
+        String message = "", priority = req.getPriority(), description = req.getDescription(), status = req.getStatus();
+        int sP = req.getStoryPoints();
 
-        if(priority!="High"&&priority!="Medium"&&priority!="Low") {
+        if (priority != "High" && priority != "Medium" && priority != "Low") {
             message = result.getString("message");
             assertEquals("The priority field only accepts 3 values {High, Medium, Low}", message);
-        }else if(description==""){
+        }
+
+        if (description == "") {
             message = result.getString("message");
             assertEquals("The description field value should not be null or empty", message);
-        }else if(sP!=1&&sP!=2&&sP!=3&&sP!=5&&sP!=8) {
+        }
+
+        if (sP != 1 && sP != 2 && sP != 3 && sP != 5 && sP != 8) {
             message = result.getString("message");
             assertEquals("The storyPoints field only accepts the following values {1, 2, 3, 5, 8}", message);
+        }
+
+        if (status.matches("-?[0-9]")) {
+            if (Integer.parseInt(status) < 0 && Integer.parseInt(status) > 1) {
+                message = result.getString("message");
+                assertEquals("The status field only accepts values 0 or 1", message);
+            }
+        } else {
+            message = result.getString("message");
+            assertEquals("Global error.", message);
         }
     }
 }
