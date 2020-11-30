@@ -16,6 +16,11 @@ public class MongoDBUtils {
         return exist;
     }
 
+    public static boolean compareRequestId(String requestId, String responseId) {
+        boolean compare = requestId.equals(responseId);
+        return compare;
+    }
+
     public static String getRandomID(String env, String mDataBase, String collection) {
         MongoDBConnection db = new MongoDBConnection(env, mDataBase);
         String id = db.foundRandomID(collection);
@@ -92,7 +97,7 @@ public class MongoDBUtils {
         }
 
         if (mongoStory.has("priority")) {
-            String[] priorityList = {"HIGH", "MEDIUM", "LOW"};
+            String[] priorityList = {"High", "Medium", "Low"};
             String priority = priorityList[parseInt(mongoStory.get("priority").toString()) - 1];
             mongoStory.remove("priority");
             mongoStory.put("priority", priority);

@@ -119,17 +119,4 @@ public class MongoDBConnection {
 		}
 		return id;
 	}
-
-	public static JSONObject foundRandomStory(String env, String mdb, String collection){
-		MongoDBConnection db = new MongoDBConnection(env, mdb);
-		JSONObject mObject = new JSONObject();
-
-		MongoCollection<Document> coll = mDataBase.getCollection(collection);
-		FindIterable<Document> findIterable = coll.find();
-
-		for (Document doc : findIterable) {
-			mObject = new JSONObject(doc.toJson());
-		}
-		return mObject;
-	}
 }
