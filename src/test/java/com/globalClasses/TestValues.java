@@ -58,4 +58,33 @@ public class TestValues{
 		String id = faker.lorem().characters(24, 25, true, true);
 		return id;
 	}
+
+	public String randomSpecialCharacters() {
+		String specialCharacters = "";
+		ArrayList<String> list = new ArrayList<String>();
+
+		list.add("#");		list.add("$");		list.add("%");		list.add("&");		list.add("/");
+		list.add("(");		list.add(")");		list.add("=");		list.add("?");		list.add("@");
+		list.add("*");		list.add("{");		list.add("[");		list.add("}");		list.add("]");
+		list.add(":");		list.add(";");		list.add(">");		list.add("¿");		list.add("!");
+		list.add(",");		list.add("<");
+
+		for(int i = 0; i < 3; i++) {
+			specialCharacters = specialCharacters+list.get((int) (Math.random()*(20-0+1)+0));
+		}
+
+		return specialCharacters;
+	}
+
+
+	public String randomAlphanumeric() {
+		ArrayList<String> list = new ArrayList<String>();
+
+		list.add("zero");		list.add("one");		list.add("two");		list.add("three");		list.add("four");
+		list.add("five");		list.add("six");		list.add("seven");		list.add("eight");		list.add("nine");
+
+		int random = (int) (Math.random()*(9-0+1)+0);
+		return list.get(random)+ String.valueOf(random);
+	}
+
 }
